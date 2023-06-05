@@ -1,4 +1,4 @@
-# Python Mini Projects
+# Small Projects
 
 Welcome to the Python Mini Projects repository! This repository contains a collection of small projects that I have created using Python. Each project focuses on a specific topic or concept, allowing me to explore and experiment with different aspects of the Python programming language.
 

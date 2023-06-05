@@ -12,7 +12,7 @@ This program provides a basic implementation of the Pong game using Python and t
 
 ## Usage
 
-Feel free to explore the projects in this repository and use them as learning resources or as inspiration for your own projects. Each project is contained in its own directory and includes a README file with instructions on how to run and use the project.
+Feel free to explore the projects in this repository and use them as learning resources or as inspiration for your own projects. Each project is contained in its own directory and includes a README file having a small description about the project.
 
 ## Contribution
 

@@ -1,5 +1,6 @@
 import turtle
-        
+import winsound
+
 class Player():
     
         # Player constructor
@@ -48,11 +49,13 @@ class Ball():
         if self.ball.ycor() > height / 2 - 10:
             self.ball.sety(height / 2 - 10)
             self.ball.dy *= -1
+            winsound.PlaySound("ball_bouncing.wav", winsound.SND_ASYNC)
         elif self.ball.ycor() < -(height / 2 - 10):
             self.ball.sety(-(height / 2 - 10))
             self.ball.dy *= -1
+            winsound.PlaySound("ball_bouncing.wav", winsound.SND_ASYNC)
             
-        # checking the ball and the borders ofhe screen left and right ,to count the score
+        # checking the ball and the borders of the screen left and right ,to count the score
     def check_border_collision_left_right(self, width, height,left_score,right_score):
         if self.ball.xcor() > width / 2 - 10:
             self.ball.goto(0, 0)
@@ -63,6 +66,24 @@ class Ball():
             self.ball.dx *= -1
             right_score +=1
         return left_score , right_score
+
+        # chekcing the ball and players collision
+    def ball_palyer_collision(self , r, l):
+        t_bal = self.ball
+        r_ply = r.plyr
+        l_ply = l.plyr
+        
+        #right player
+        if ( t_bal.xcor() > (r_ply.xcor()-10) and t_bal.xcor() < r_ply.xcor())  and  ( t_bal.ycor() < r_ply.ycor() + 40 and t_bal.ycor() > r_ply.ycor() - 40):
+            t_bal.setx(r_ply.xcor()-10)
+            t_bal.dx *= -1
+            winsound.PlaySound("ball_bouncing.wav", winsound.SND_ASYNC)
+            
+        #left player
+        if (t_bal.xcor() > l_ply.xcor() and t_bal.xcor() < (l_ply.xcor() + 10)) and ( t_bal.ycor() < l_ply.ycor() + 40 and t_bal.ycor() > l_ply.ycor() - 40):
+            t_bal.setx(l_ply.xcor() + 10)
+            t_bal.dx *= -1
+            winsound.PlaySound("ball_bouncing.wav", winsound.SND_ASYNC)
 
 class Game():
     
@@ -95,29 +116,12 @@ class Game():
         self.pen.color("white")
         self.pen.hideturtle()
         self.pen.goto(0,260)
-        self.pen.write("Player(1): 0   Player(2): 0" , align="center",font=("Courier" , 20 ,"normal"))
         
         # updating the score on the screen
     def update_scores(self):
         self.pen.clear()
         self.pen.write("Player(1): {}   Player(2): {}".format(self.player_left_score, self.player_right_score),align="center", font=("Courier", 20, "normal"))
-        
-        # chekcing the ball and layers collision
-    def ball_palyer_collision(self):
-        t_bal = self.ball.ball
-        r_ply = self.player_right.plyr
-        l_ply = self.player_left.plyr
-        
-        #right player
-        if ( t_bal.xcor() > (r_ply.xcor()-10) and t_bal.xcor() < r_ply.xcor())  and  ( t_bal.ycor() < r_ply.ycor() + 40 and t_bal.ycor() > r_ply.ycor() - 40):
-            t_bal.setx(r_ply.xcor()-10)
-            t_bal.dx *= -1
-            
-        #left player
-        if (t_bal.xcor() > l_ply.xcor() and t_bal.xcor() < (l_ply.xcor() + 10)) and ( t_bal.ycor() < l_ply.ycor() + 40 and t_bal.ycor() > l_ply.ycor() - 40):
-            t_bal.setx(l_ply.xcor() + 10)
-            t_bal.dx *= -1
-            
+                    
         # game start funciton 
     def start_game(self):
         
@@ -134,7 +138,7 @@ class Game():
             self.ball.move()
             self.ball.check_border_collision_up_down(self.width, self.height)
             self.player_left_score , self.player_right_score = self.ball.check_border_collision_left_right(self.width, self.height,self.player_left_score,self.player_right_score)
-            self.ball_palyer_collision()
+            self.ball.ball_palyer_collision(self.player_right,self.player_left)
             self.update_scores()
             
 # basic values

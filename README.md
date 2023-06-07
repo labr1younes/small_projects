@@ -10,6 +10,9 @@ This program provides a simple command-line interface for performing basic compu
 2. **Shutdown Timer**:
 This program provides a basic implementation of the Pong game using Python and the Turtle module. It demonstrates the use of object-oriented programming concepts to create interactive games.
 
+3. **Hangman**:
+This program provides a basic interactive experience for playing the Hangman game using the random module for word selection .
+
 ## Usage
 
 Feel free to explore the projects in this repository and use them as learning resources or as inspiration for your own projects. Each project is contained in its own directory and includes a README file having a small description about the project.

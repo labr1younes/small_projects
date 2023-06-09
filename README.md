@@ -4,14 +4,17 @@ Welcome to the Python Mini Projects repository! This repository contains a colle
 
 ## Project List
 
-1. **Pong Game**: 
+1. **Shutdown Timer**: 
 This program provides a simple command-line interface for performing basic computer operations such as shutting down, restarting, sleeping, and canceling pending operations.
 
-2. **Shutdown Timer**:
-This program provides a basic implementation of the Pong game using Python and the Turtle module. It demonstrates the use of object-oriented programming concepts to create interactive games.
+2. **Pong Game**:
+This program provides a basic implementation of the Pong game using Python . It demonstrates the use of object-oriented programming concepts to create interactive games.
 
 3. **Hangman**:
-This program provides a basic interactive experience for playing the Hangman game using the random module for word selection .
+This program provides a basic implementation of the Hangman game using Python .
+
+4. **Tic Tac Toe**:
+This program provides a basic implementation of the Tic Tac Toe game using Python  .
 
 ## Usage
 

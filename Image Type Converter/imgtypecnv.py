@@ -1,6 +1,7 @@
 from PIL import Image
 import glob
 import os
+import argparse
 
 def img_name(img):
     return img.filename
@@ -56,11 +57,25 @@ def jpg_2_png(path):
     img_new = to_rgp(img)
     img_new.save(path.replace("jpg", "png"), quality=95)
     print("Convert is done")
-    
-    
 
-
+def prs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d","--dir" , help="specify the directory that contains the images ")
+    parser.add_argument("-o","--option" , help="1 for (png->jpg) and 2 for (jpg->png)")
+    parser.add_argument("-s","--save",help="the name of dir you want to save the converted images")
+    
+    args = parser.parse_args()
+    return args
+    
 if __name__ == "__main__":
+    args = prs()
+    
+    #print("--------->",args)
+    dirc = args.dir
+    option = args.option
+    save = args.save
+    print("------------> ",dirc)
+    
     for file in glob.glob("*.jpg"):
         jpg_2_png(file)
         img_summery(file)
@@ -68,4 +83,3 @@ if __name__ == "__main__":
         
     print("done")
     
-

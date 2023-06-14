@@ -16,6 +16,9 @@ This program provides a basic implementation of the Hangman game using Python .
 4. **Tic Tac Toe**:
 This program provides a basic implementation of the Tic Tac Toe game using Python  .
 
+5. **Image Type Converter**:
+This program is a Python script that convert image files between PNG and JPG formats in a specified directory  .
+
 ## Usage
 
 Feel free to explore the projects in this repository and use them as learning resources or as inspiration for your own projects. Each project is contained in its own directory and includes a README file having a small description about the project.

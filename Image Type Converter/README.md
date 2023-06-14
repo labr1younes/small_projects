@@ -21,6 +21,6 @@ Replace `<directory_path>` with the path to the directory containing the images 
 
 For example, to convert PNG files in the directory "C:\Images" to JPG format, you would run the following command:
 ```
-python image_converter.py -d C:\Images -o 1
+python imgtypecnv.py -d C:\Images -o 1
 ```
 

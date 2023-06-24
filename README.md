@@ -22,6 +22,10 @@ This program is a Python script that convert image files between PNG and JPG for
 6. **WIFI Network Scanner**:
 This program is a Python script that aims to detect new devices connected to a local network using ARP (Address Resolution Protocol) scanning.
 
+7. **Caesar Cipher**:
+This program is a Python code implements a basic Caesar cipher encryption and decryption algorithm. The Caesar cipher is a substitution cipher where each letter in the plaintext is shifted a certain number of positions down the alphabet.
+
+
 ## Usage
 
 Feel free to explore the projects in this repository and use them as learning resources or as inspiration for your own projects. Each project is contained in its own directory and includes a README file having a small description about the project.

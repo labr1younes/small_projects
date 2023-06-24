@@ -20,19 +20,19 @@ def detect_new_devices():
 
     return known_devices
 
-# printing all the IP and MAC 
+# Printing all the IP and MAC 
 def show(kd):
     keys = list(kd.keys())
     for key in keys :
         print("Connected device: IP = {}, MAC = {}".format(key,kd[key]))
     print("-------------------")
 
-# show how many devices are connected 
+# Show how many devices are connected 
 def count(kd):
     le = len(kd)
     print("There are {} conected ".format(le))
     
-# main
+# Main
 if __name__ == "__main__":
     while True:
         try:

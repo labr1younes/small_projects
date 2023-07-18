@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>303</height>
+    <width>258</width>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,40 +17,41 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Time</string>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>0</number>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="time"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="space">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="stop">
+      <widget class="QPushButton" name="scan">
        <property name="text">
-        <string>Stop</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="start">
-       <property name="text">
-        <string>Start</string>
+        <string>Scan</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QTableWidget" name="mytableWidget">
+     <column>
+      <property name="text">
+       <string>IP</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>MAC</string>
+      </property>
+     </column>
+    </widget>
    </item>
   </layout>
  </widget>

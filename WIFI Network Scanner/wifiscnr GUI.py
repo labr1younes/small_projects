@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QWidget ,QLabel ,QPushButton ,QSpinBox, QListView,QHBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QTableWidget, QTableWidgetItem,QProgressBar
 from PyQt6 import uic
 import wifiscnr as scnr
 import sys
@@ -11,30 +11,33 @@ class UI(QWidget):
         uic.loadUi("UI.ui",self)
 
         #define widgets
-        self.startBtn = self.findChild(QPushButton,"start")
-        self.stopBtn = self.findChild(QPushButton,"stop")
-        self.timeSpn = self.findChild(QSpinBox,"time")
-        self.listView = self.findChild(QListView,"mylistView")
+        self.scantBtn = self.findChild(QPushButton,"scan")
+        self.table = self.findChild(QTableWidget,"mytableWidget")
+        self.pbar = self.findChild(QProgressBar, "progressBar")
 
         # adding functions
-        self.startBtn.clicked.connect(self.fun_start)
-        self.stopBtn.clicked.connect(self.fun_stop)
+        self.scantBtn.clicked.connect(self.fun_scan)
 
+        self.setWindowTitle("Wi-Fi Scanner")
+        self.setFixedSize(250,250)
         self.show()
-        
-    def fun_start(self):
+
+    def load_data(self,tmp):
+        row = 0
+        self.table.setRowCount(len(tmp))
+        keys = list(tmp.keys())
+
+        for key in keys:
+            self.table.setItem(row, 0, QTableWidgetItem(key))
+            self.table.setItem(row, 1, QTableWidgetItem(tmp[key]))
+            row += 1
+        self.pbar.setValue(100)
+
+    def fun_scan(self):
+        self.pbar.setValue(0)
         t = scnr.detect_new_devices()
-        scnr.show(t)
-        print(f"this is Start, and it s {tmp}")
+        self.load_data(t)
 
-    def fun_stop(self):
-        tmp = self.timeSpn.value()
-        print(f"this is Stop, and it s {tmp}")
-        
-        
-
-        
-        
 if  __name__ == "__main__":
     app = QApplication(sys.argv)
 

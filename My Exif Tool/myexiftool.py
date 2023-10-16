@@ -70,10 +70,10 @@ def rmv_exif_data(filepath: str) -> None:
     image = read_img(filepath)
     imagename, imagetype, imagepath = split_filepath(filepath)
     data = list(image.getdata())
-    image2 = Image.new(image.mode, image.size)
-    image2.putdata(data)
+    image_noexf = Image.new(image.mode, image.size)
+    image_noexf.putdata(data)
     complete_path = os.path.join(imagepath, f"{imagename}_noExif{imagetype}")
-    image2.save(complete_path)
+    image_noexf.save(complete_path)
 
 
 # Add one exif
@@ -90,9 +90,12 @@ def add_mult_exif(newexif, exif_dic: dict) -> None:
 
 # Preparing the parser
 def prs():
-    parser = argparse.ArgumentParser(description='Process Exif Data of Images')
-    parser.add_argument("directory", help="specify the directory that contains the images ")
-    parser.add_argument("-sh", "--show", required=False, help="Show the Exif data of the image ")
+    parser = argparse.ArgumentParser(description='-*-*-*-*-*-*-*-*-*-[ Process Exif Data of Images ]-*-*-*-*-*-*-*-*-*-', formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("dir", help="specify the directory that contains the images ")
+    parser.add_argument("-sh", "--show", required=False, help="Show the basic information of the image ")
+    parser.add_argument("-exf", "--exif", required=False, help="Show the Exif data of the image ")
+    parser.add_argument("-rmv", "--remove", required=False, help='''Remove all the Exif data of the image\nyou will 
+    see a new image in the same directory\nwith same name and ending with (_noExif) ''')
 
     arg = parser.parse_args()
     return arg
@@ -112,9 +115,16 @@ def is_valid_file_dir(path):
 
 # Our main function
 def exf_tool(arg):
-    file_path = arg.directory
+    file_path = arg.dir
+
     if is_valid_file_dir(file_path):
-        print_basic_data(file_path)
+        if arg.show is not None:
+            print_basic_data(file_path)
+        if arg.exif is not None:
+            print_exif_data(file_path)
+        if arg.remove is not None:
+            rmv_exif_data(file_path)
+
     else:
         print("\n Process Failed \n")
 

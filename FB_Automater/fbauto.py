@@ -24,13 +24,14 @@ def filtr(responsejson):
         # store = result.get("store", None)
         subcategory = result.get("subcategory", None)
         # subcatslug = result.get("subcatslug", None)
-        typee = result.get("type", None)
+        # typee = result.get("type", None)
         urll = result.get("url", None)
+        sale_start = result.get("sale_start", None)
 
         if language not in ["English", "Arabic"]:
             continue
         else:
-            tmp_result = [category, image, language, name, shoer_description, subcategory, typee, urll]
+            tmp_result = [category, image, language, name, shoer_description, subcategory, urll, sale_start]
             print("--------------------------------------------- ADDED")
         filtred_data.append(tmp_result)
     return filtred_data
@@ -44,26 +45,54 @@ def print_data(data):
         print("name = ", cours[3])
         print("shoer_description = ", cours[4])
         print("subcategory = ", cours[5])
-        print("type = ", cours[6])
-        print("url = ", cours[7])
+        print("url = ", cours[6])
+        print("sale_start = ", cours[7])
         print("---------------------------------------------")
     print("--- Done ---")
+
+
+def add_data_2_db(cursor, _data):
+    sql_insert = "INSERT INTO udemy_cpns (category,image,language,name,description,subcategory,courseurl,sale_start) " \
+                 "VALUES (%s, %s,%s, %s,%s, %s,%s,%s)"
+
+    for course in _data:
+        if iscourseindb(cursor, course):
+            continue
+        val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
+        cursor.execute(sql_insert, val)
+        mydb.commit()
+        print(cursor.fetchall())
+
+
+def iscourseindb(cursor, course):
+    sql_select = "SELECT * FROM udemy_cpns WHERE category = %s and image = %s and language = %s and name = %s " \
+                 "and description = %s and subcategory = %s and courseurl = %s and sale_start = %s"
+
+    val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
+    cursor.execute(sql_select, val)
+    myresult = mycursor.fetchall()
+
+    if len(myresult) != 0:
+        print("we have it ")
+        return True
+
+    return False
 
 
 if __name__ == "__main__":
     load_dotenv()
     url = os.getenv('URL')
-
-    response = requests.get(url)
-    print(len(response.json()["results"]))
-    tmpdata = filtr(response.json())
-    print_data(tmpdata)
-
     mydb = mysql.connector.connect(
         host=os.getenv('HOST'),
         user=os.getenv('USER'),
         password=os.getenv('PASSWORD'),
         database=os.getenv('DATABASE')
     )
+    mycursor = mydb.cursor()
 
-    print(mydb)
+    response = requests.get(url)
+    print(len(response.json()["results"]))
+    tmpdata = filtr(response.json())
+    # print_data(tmpdata)
+
+    add_data_2_db(mycursor, tmpdata)

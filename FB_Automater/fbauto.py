@@ -32,7 +32,7 @@ def filtr(responsejson):
             continue
         else:
             tmp_result = [category, image, language, name, shoer_description, subcategory, urll, sale_start]
-            print("--------------------------------------------- ADDED")
+            # print("--------------------------------------------- ADDED")
         filtred_data.append(tmp_result)
     return filtred_data
 
@@ -58,10 +58,12 @@ def add_data_2_db(cursor, _data):
     for course in _data:
         if iscourseindb(cursor, course):
             continue
+
         val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
         cursor.execute(sql_insert, val)
         mydb.commit()
-        print(cursor.fetchall())
+    print(cursor.fetchall())
+    mydb.commit()
 
 
 def iscourseindb(cursor, course):
@@ -70,10 +72,10 @@ def iscourseindb(cursor, course):
 
     val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
     cursor.execute(sql_select, val)
-    myresult = mycursor.fetchall()
+    # myresult = mycursor.fetchall()
 
-    if len(myresult) != 0:
-        print("we have it ")
+    if cursor.rowcount > 0:
+        print("we already have : ", course[3])
         return True
 
     return False

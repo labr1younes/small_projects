@@ -5,12 +5,11 @@ import mysql.connector
 
 
 def filtr(responsejson):
+    # This function is for filtering the courses we got in results
     filtred_data = []
     for result in responsejson["results"]:
         if result["type"] == "Affiliate":
             continue
-
-        tmp_result = []
 
         category = result.get("category", None)
         # catslug = result.get("catslug", None)
@@ -38,6 +37,7 @@ def filtr(responsejson):
 
 
 def print_data(data):
+    # This function is for showing the course information
     for cours in data:
         print("category = ", cours[0])
         print("image = ", cours[1])
@@ -47,30 +47,32 @@ def print_data(data):
         print("subcategory = ", cours[5])
         print("url = ", cours[6])
         print("sale_start = ", cours[7])
-        print("---------------------------------------------")
-    print("--- Done ---")
+        print("--------------------------------------------")
+    print("---- Done Printing courses informations ----")
 
 
-def add_data_2_db(cursor, _data):
+def add_data_2_db(mysqlconnector, _data):
+    # This function is for adding courses to the database
     sql_insert = "INSERT INTO udemy_cpns (category,image,language,name,description,subcategory,courseurl,sale_start) " \
                  "VALUES (%s, %s,%s, %s,%s, %s,%s,%s)"
-
+    mycursor = mysqlconnector.cursor(buffered=True)
     for course in _data:
-        if iscourseindb(cursor, course):
+        if iscourseindb(mycursor, course):
             continue
 
         val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
-        cursor.execute(sql_insert, val)
-        mydb.commit()
-    print(cursor.fetchall())
-    mydb.commit()
+        mycursor.execute(sql_insert, val)
+        mysqlconnector.commit()
+
+    # print(mycursor.fetchall())
+    mysqlconnector.commit()
 
 
 def iscourseindb(cursor, course):
-    sql_select = "SELECT * FROM udemy_cpns WHERE category = %s and image = %s and language = %s and name = %s " \
-                 "and description = %s and subcategory = %s and courseurl = %s and sale_start = %s"
+    # This function is for checking if the course in our database already
+    sql_select = "SELECT * FROM udemy_cpns WHERE courseurl = %s "
 
-    val = (course[0], course[1], course[2], course[3], course[4], course[5], course[6], course[7])
+    val = (course[6],)
     cursor.execute(sql_select, val)
     # myresult = mycursor.fetchall()
 
@@ -81,7 +83,8 @@ def iscourseindb(cursor, course):
     return False
 
 
-if __name__ == "__main__":
+def main():
+    # This is the main function
     load_dotenv()
     url = os.getenv('URL')
     mydb = mysql.connector.connect(
@@ -90,11 +93,15 @@ if __name__ == "__main__":
         password=os.getenv('PASSWORD'),
         database=os.getenv('DATABASE')
     )
-    mycursor = mydb.cursor()
+    # mycursor = mydb.cursor()
 
     response = requests.get(url)
     print(len(response.json()["results"]))
-    tmpdata = filtr(response.json())
-    # print_data(tmpdata)
+    courses = filtr(response.json())
+    # print_data(courses)
 
-    add_data_2_db(mycursor, tmpdata)
+    add_data_2_db(mydb, courses)
+
+
+if __name__ == "__main__":
+    main()

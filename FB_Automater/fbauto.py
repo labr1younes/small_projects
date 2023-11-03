@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from dotenv import load_dotenv
@@ -85,7 +86,6 @@ def iscourseindb(cursor, course):
 
 def main():
     # This is the main function
-    load_dotenv()
     url = os.getenv('URL')
     mydb = mysql.connector.connect(
         host=os.getenv('HOST'),
@@ -102,6 +102,35 @@ def main():
 
     add_data_2_db(mydb, courses)
 
+def add_fb_post():
+    # This function is for adding one post to the page
+    pageid = os.getenv('PAGEID')
+    token = os.getenv('ACCESS_TOKEN')
+
+    headers = {
+        "Content-Type": "application/json",
+    }
+    data = {
+        "message": "this is the first post ",
+        # "link": link,
+        "published": True,
+        # "scheduled_publish_time": scheduled_publish_time
+    }
+    response = requests.post(
+        f"https://graph.facebook.com/v18.0/{pageid}/feed?access_token={token}",
+        headers=headers,
+        data=json.dumps(data)
+    )
+
+    # Check the response status code.
+    if response.status_code == 200:
+        print("Post published successfully!")
+    else:
+        print("Error publishing post:", response.status_code)
+
 
 if __name__ == "__main__":
-    main()
+    load_dotenv()
+    # main()
+
+

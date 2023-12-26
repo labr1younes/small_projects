@@ -69,6 +69,19 @@ def add_data_2_db(mysqlconnector, _data):
     mysqlconnector.commit()
 
 
+def get_data_from_db(mysqlconnector):
+    # This function is for getting courses to the database
+    sql_select = "SELECT * FROM botdb.udemy_cpns where isposted = 0 "
+    cursor = mysqlconnector.cursor(buffered=True)
+
+    cursor.execute(sql_select)
+    mysqlconnector.commit()
+
+    result = cursor.fetchall()
+    print(result)
+    return result
+
+
 def iscourseindb(cursor, course):
     # This function is for checking if the course in our database already
     sql_select = "SELECT * FROM udemy_cpns WHERE courseurl = %s "
@@ -84,15 +97,20 @@ def iscourseindb(cursor, course):
     return False
 
 
-def main():
-    # This is the main function
-    url = os.getenv('URL')
-    mydb = mysql.connector.connect(
+def database_cnc():
+    db = mysql.connector.connect(
         host=os.getenv('HOST'),
         user=os.getenv('USER'),
         password=os.getenv('PASSWORD'),
         database=os.getenv('DATABASE')
     )
+    return db
+
+
+def main():
+    # This is the main function
+    url = os.getenv('URL')
+    mycnc = database_cnc()
     # mycursor = mydb.cursor()
 
     response = requests.get(url)
@@ -100,7 +118,9 @@ def main():
     courses = filtr(response.json())
     # print_data(courses)
 
-    add_data_2_db(mydb, courses)
+    # add_data_2_db(mydb, courses)
+    get_data_from_db(mycnc)
+
 
 def add_fb_post():
     # This function is for adding one post to the page
@@ -111,13 +131,14 @@ def add_fb_post():
         "Content-Type": "application/json",
     }
     data = {
-        "message": "this is the first post ",
+        "message": "this is the 3nd post ",
         # "link": link,
-        "published": True,
+        "url": "https://img-c.udemycdn.com/course/750x422/5081398_e792_5.jpg",
+        "published": "true",
         # "scheduled_publish_time": scheduled_publish_time
     }
     response = requests.post(
-        f"https://graph.facebook.com/v18.0/{pageid}/feed?access_token={token}",
+        f"https://graph.facebook.com/v18.0/{pageid}/photos?access_token={token}",
         headers=headers,
         data=json.dumps(data)
     )
@@ -131,6 +152,5 @@ def add_fb_post():
 
 if __name__ == "__main__":
     load_dotenv()
-    # main()
-
-
+    # add_fb_post()
+    main()
